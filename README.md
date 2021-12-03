@@ -1,3 +1,3 @@
-# lib-template
+# Spred React
 
-Library template repository
+React integration for [Spred](https://github.com/art-bazhin/spred).
