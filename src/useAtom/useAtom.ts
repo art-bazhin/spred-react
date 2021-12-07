@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, DependencyList } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Atom, configure } from 'spred';
 
@@ -6,18 +6,39 @@ configure({
   _notificationWrapper: unstable_batchedUpdates,
 } as any);
 
-export function useAtom<T>(atomFactory: () => Atom<T>): T;
-export function useAtom<T>(atom: Atom<T>): T;
+function getAtom<T>(atomOrFactory: Atom<T> | (() => Atom<T>)) {
+  return (
+    (atomOrFactory as any).subscribe ? atomOrFactory : atomOrFactory()
+  ) as Atom<T>;
+}
 
-export function useAtom<T>(atomOrFactory: any) {
-  const [, forceRender] = useState<any>();
-  const [storedAtom] = useState(atomOrFactory as any);
+export function useAtom<T>(
+  atomFactory: () => Atom<T>,
+  deps?: DependencyList
+): T;
+export function useAtom<T>(atom: Atom<T>, deps?: DependencyList): T;
 
-  const rerender = () => forceRender({});
+export function useAtom<T>(
+  atomOrFactory: Atom<T> | (() => Atom<T>),
+  dependencies?: DependencyList
+) {
+  const deps = dependencies || [];
 
-  let atom = atomOrFactory.subscribe ? atomOrFactory : (storedAtom as Atom<T>);
+  const firstRender = useRef(true);
+  const emitOnSubscribe = useRef(false);
+  const atom = useRef(getAtom(atomOrFactory));
+  const [value, setValue] = useState(atom.current);
 
-  useEffect(() => atom.subscribe(rerender, false), [atom]);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+    } else {
+      emitOnSubscribe.current = true;
+      atom.current = getAtom(atomOrFactory);
+    }
 
-  return atom.get();
+    return atom.current.subscribe(setValue, emitOnSubscribe.current);
+  }, deps);
+
+  return value;
 }
