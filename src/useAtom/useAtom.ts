@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, DependencyList } from 'react';
+import { useEffect, useRef, useState, DependencyList, useMemo } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Atom, configure } from 'spred';
 
@@ -12,6 +12,8 @@ function getAtom<T>(atomOrFactory: Atom<T> | (() => Atom<T>)) {
   ) as Atom<T>;
 }
 
+const noop = () => {};
+
 export function useAtom<T>(
   atomFactory: () => Atom<T>,
   deps?: DependencyList
@@ -24,21 +26,36 @@ export function useAtom<T>(
 ) {
   const deps = dependencies || [];
 
-  const firstRender = useRef(true);
-  const emitOnSubscribe = useRef(false);
-  const atom = useRef(getAtom(atomOrFactory));
-  const [value, setValue] = useState(atom.current);
+  const firstRenderRef = useRef(true);
+  const unsubRef = useRef<() => void>();
+
+  const atom = useMemo(() => getAtom(atomOrFactory), []);
+  const atomRef = useRef(atom);
+
+  let noopUnsub = noop;
+
+  if (firstRenderRef.current) {
+    noopUnsub = atomRef.current.subscribe(noop, false);
+  }
+
+  const [container, setContainer] = useState(() => ({
+    value: atomRef.current(),
+  }));
 
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+    const subscriber = (value: T) => setContainer({ value });
+
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      unsubRef.current = atomRef.current.subscribe(subscriber, false);
+      noopUnsub();
     } else {
-      emitOnSubscribe.current = true;
-      atom.current = getAtom(atomOrFactory);
+      atomRef.current = getAtom(atomOrFactory);
+      unsubRef.current = atomRef.current.subscribe(subscriber);
     }
 
-    return atom.current.subscribe(setValue, emitOnSubscribe.current);
+    return unsubRef.current;
   }, deps);
 
-  return value;
+  return container.value;
 }
