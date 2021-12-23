@@ -4,7 +4,7 @@
   "homepage": "https://github.com/art-bazhin/spred-react",
   "repository": "git@github.com/art-bazhin/spred-react.git",
   "bugs": "https://github.com/art-bazhin/spred-react/issues",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",

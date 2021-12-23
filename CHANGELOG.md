@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/art-bazhin/spred-react/compare/v0.0.3...v0.1.0) (2021-12-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* useAtom => useSignal
+
+### Code Refactoring
+
+* update spred version ([e6c2d16](https://github.com/art-bazhin/spred-react/commit/e6c2d16b699fa7c09e2d144f043de4a353ef6231))
+
 ### [0.0.3](https://github.com/art-bazhin/spred-react/compare/v0.0.2...v0.0.3) (2021-12-13)
 
 
