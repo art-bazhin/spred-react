@@ -1,3 +1,3 @@
-import { useAtom } from './useAtom/useAtom';
+import { useSignal } from './useSignal/useSignal';
 
-export { useAtom };
+export { useSignal };

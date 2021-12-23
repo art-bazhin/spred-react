@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState, DependencyList, useMemo } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
-import { Atom, configure } from 'spred';
+import { Signal, configure } from 'spred';
 
 configure({
   _notificationWrapper: unstable_batchedUpdates,
 } as any);
 
-function getAtom<T>(atomOrFactory: Atom<T> | (() => Atom<T>)) {
+function getSignal<T>(signalOrFactory: Signal<T> | (() => Signal<T>)) {
   return (
-    (atomOrFactory as any).subscribe ? atomOrFactory : atomOrFactory()
-  ) as Atom<T>;
+    (signalOrFactory as any).subscribe ? signalOrFactory : signalOrFactory()
+  ) as Signal<T>;
 }
 
 const noop = () => {};
 
-export function useAtom<T>(
-  atomFactory: () => Atom<T>,
+export function useSignal<T>(
+  signalFactory: () => Signal<T>,
   deps?: DependencyList
 ): T;
-export function useAtom<T>(atom: Atom<T>, deps?: DependencyList): T;
+export function useSignal<T>(signal: Signal<T>, deps?: DependencyList): T;
 
-export function useAtom<T>(
-  atomOrFactory: Atom<T> | (() => Atom<T>),
+export function useSignal<T>(
+  signalOrFactory: Signal<T> | (() => Signal<T>),
   dependencies?: DependencyList
 ) {
   const deps = dependencies || [];
@@ -29,17 +29,17 @@ export function useAtom<T>(
   const firstRenderRef = useRef(true);
   const unsubRef = useRef<() => void>();
 
-  const atom = useMemo(() => getAtom(atomOrFactory), []);
-  const atomRef = useRef(atom);
+  const signal = useMemo(() => getSignal(signalOrFactory), []);
+  const signalRef = useRef(signal);
 
   let noopUnsub = noop;
 
   if (firstRenderRef.current) {
-    noopUnsub = atomRef.current.subscribe(noop, false);
+    noopUnsub = signalRef.current.subscribe(noop, false);
   }
 
   const [container, setContainer] = useState(() => ({
-    value: atomRef.current(),
+    value: signalRef.current(),
   }));
 
   useEffect(() => {
@@ -47,11 +47,11 @@ export function useAtom<T>(
 
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
-      unsubRef.current = atomRef.current.subscribe(subscriber, false);
+      unsubRef.current = signalRef.current.subscribe(subscriber, false);
       noopUnsub();
     } else {
-      atomRef.current = getAtom(atomOrFactory);
-      unsubRef.current = atomRef.current.subscribe(subscriber);
+      signalRef.current = getSignal(signalOrFactory);
+      unsubRef.current = signalRef.current.subscribe(subscriber);
     }
 
     return unsubRef.current;
