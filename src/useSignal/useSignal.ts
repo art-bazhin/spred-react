@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, DependencyList, useMemo } from 'react';
+import { useEffect, useRef, useState, DependencyList } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { Signal, configure } from 'spred';
 
@@ -12,7 +12,8 @@ function getSignal<T>(signalOrFactory: Signal<T> | (() => Signal<T>)) {
   ) as Signal<T>;
 }
 
-const noop = () => {};
+const increment = (n: number) => ++n;
+const INIT: any = {};
 
 export function useSignal<T>(
   signalFactory: () => Signal<T>,
@@ -25,37 +26,27 @@ export function useSignal<T>(
   dependencies?: DependencyList
 ) {
   const deps = dependencies || [];
+  const [rendered, trigger] = useState(0);
+  const valueRef = useRef(INIT);
+  const sub = (value: T) => {
+    const shouldRender = valueRef.current !== INIT;
+    valueRef.current = value;
+    if (shouldRender) trigger(increment);
+  };
 
-  const firstRenderRef = useRef(true);
-  const unsubRef = useRef<() => void>();
+  let unsub: () => any;
 
-  const signal = useMemo(() => getSignal(signalOrFactory), []);
-  const signalRef = useRef(signal);
-
-  let noopUnsub = noop;
-
-  if (firstRenderRef.current) {
-    noopUnsub = signalRef.current.subscribe(noop, false);
+  if (valueRef.current === INIT) {
+    unsub = getSignal(signalOrFactory).subscribe(sub);
   }
 
-  const [container, setContainer] = useState(() => ({
-    value: signalRef.current(),
-  }));
-
   useEffect(() => {
-    const subscriber = (value: T) => setContainer({ value });
-
-    if (firstRenderRef.current) {
-      firstRenderRef.current = false;
-      unsubRef.current = signalRef.current.subscribe(subscriber, false);
-      noopUnsub();
-    } else {
-      signalRef.current = getSignal(signalOrFactory);
-      unsubRef.current = signalRef.current.subscribe(subscriber);
+    if (rendered) {
+      unsub = getSignal(signalOrFactory).subscribe(sub);
     }
 
-    return unsubRef.current;
+    return unsub;
   }, deps);
 
-  return container.value;
+  return valueRef.current;
 }
