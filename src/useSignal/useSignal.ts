@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, DependencyList } from 'react';
+import { DependencyList, useMemo, useCallback } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
-import { Signal, configure } from 'spred';
+import { isSignal, Signal, configure } from 'spred';
+import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 configure({
   _notificationWrapper: unstable_batchedUpdates,
@@ -8,12 +9,11 @@ configure({
 
 function getSignal<T>(signalOrFactory: Signal<T> | (() => Signal<T>)) {
   return (
-    (signalOrFactory as any).subscribe ? signalOrFactory : signalOrFactory()
+    isSignal(signalOrFactory) ? signalOrFactory : signalOrFactory()
   ) as Signal<T>;
 }
 
-const increment = (n: number) => ++n;
-const INIT: any = {};
+const EMPTY: DependencyList = [];
 
 export function useSignal<T>(
   signalFactory: () => Signal<T>,
@@ -25,28 +25,12 @@ export function useSignal<T>(
   signalOrFactory: Signal<T> | (() => Signal<T>),
   dependencies?: DependencyList
 ) {
-  const deps = dependencies || [signalOrFactory];
-  const [rendered, trigger] = useState(0);
-  const valueRef = useRef(INIT);
-  const sub = (value: T) => {
-    const shouldRender = valueRef.current !== INIT;
-    valueRef.current = value;
-    if (shouldRender) trigger(increment);
-  };
+  const deps =
+    arguments.length === 1 ? [signalOrFactory] : dependencies || EMPTY;
+  const signal = useMemo(() => getSignal(signalOrFactory), deps);
+  const subscribe = useCallback((cb) => signal.subscribe(cb), deps);
+  const getSnapshot = useCallback(() => signal.sample(), deps);
+  const value = useSyncExternalStore(subscribe, getSnapshot);
 
-  let unsub: () => any;
-
-  if (valueRef.current === INIT) {
-    unsub = getSignal(signalOrFactory).subscribe(sub);
-  }
-
-  useEffect(() => {
-    if (rendered) {
-      unsub = getSignal(signalOrFactory).subscribe(sub);
-    }
-
-    return unsub;
-  }, deps);
-
-  return valueRef.current;
+  return value;
 }
