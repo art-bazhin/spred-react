@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/art-bazhin/spred-react/compare/v0.1.4...v0.1.5) (2022-08-25)
+
+
+### Bug Fixes
+
+* remove redundant cb call ([c216eba](https://github.com/art-bazhin/spred-react/commit/c216eba9ba9b6a2a99adefb854496e35373188a5))
+
 ### [0.1.4](https://github.com/art-bazhin/spred-react/compare/v0.1.3...v0.1.4) (2022-08-25)
 
 
