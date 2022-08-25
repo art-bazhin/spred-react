@@ -28,7 +28,7 @@ export function useSignal<T>(
   const deps =
     arguments.length === 1 ? [signalOrFactory] : dependencies || EMPTY;
   const signal = useMemo(() => getSignal(signalOrFactory), deps);
-  const subscribe = useCallback((cb) => signal.subscribe(cb), deps);
+  const subscribe = useCallback((cb) => signal.subscribe(cb, false), deps);
   const getSnapshot = useCallback(() => signal.sample(), deps);
   const value = useSyncExternalStore(subscribe, getSnapshot);
 
