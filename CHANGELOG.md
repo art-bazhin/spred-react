@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/art-bazhin/spred-react/compare/v0.1.0...v0.1.1) (2022-08-25)
+
+
+### Performance Improvements
+
+* improve memory usage ([d91f6f5](https://github.com/art-bazhin/spred-react/commit/d91f6f58e1fd5b058c4f0f562eb2947c0d07152b))
+
 ## [0.1.0](https://github.com/art-bazhin/spred-react/compare/v0.0.3...v0.1.0) (2021-12-23)
 
 
