@@ -17,15 +17,15 @@ const INIT: any = {};
 
 export function useSignal<T>(
   signalFactory: () => Signal<T>,
-  deps?: DependencyList
+  deps: DependencyList
 ): T;
-export function useSignal<T>(signal: Signal<T>, deps?: DependencyList): T;
+export function useSignal<T>(signal: Signal<T>): T;
 
 export function useSignal<T>(
   signalOrFactory: Signal<T> | (() => Signal<T>),
   dependencies?: DependencyList
 ) {
-  const deps = dependencies || [];
+  const deps = dependencies || [signalOrFactory];
   const [rendered, trigger] = useState(0);
   const valueRef = useRef(INIT);
   const sub = (value: T) => {
