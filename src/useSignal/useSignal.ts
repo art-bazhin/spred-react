@@ -26,8 +26,9 @@ export function useSignal<T>(
   signalOrFactory: Signal<T> | (() => Signal<T>),
   dependencies?: DependencyList
 ) {
-  const deps =
-    arguments.length === 1 ? [signalOrFactory] : dependencies || EMPTY;
+  const deps = isSignal(signalOrFactory)
+    ? [signalOrFactory]
+    : dependencies || EMPTY;
 
   const args: [(cb: any) => () => any, () => T] = useMemo(() => {
     const signal = getSignal(signalOrFactory);
