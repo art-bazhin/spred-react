@@ -14,6 +14,7 @@ function getSignal<T>(signalOrFactory: Signal<T> | (() => Signal<T>)) {
 }
 
 const EMPTY: DependencyList = [];
+const NOOP = () => {};
 
 export function useSignal<T>(
   signalFactory: () => Signal<T>,
@@ -32,7 +33,16 @@ export function useSignal<T>(
 
   const args: [(cb: any) => () => any, () => T] = useMemo(() => {
     const signal = getSignal(signalOrFactory);
-    return [(cb: any) => signal.subscribe(cb, false), () => signal.sample()];
+    const unsubNoop = signal.subscribe(NOOP, false);
+
+    return [
+      (cb: any) => {
+        const unsub = signal.subscribe(cb, false);
+        unsubNoop();
+        return unsub;
+      },
+      () => signal.sample(),
+    ];
   }, deps);
 
   return useSyncExternalStore(...args);
