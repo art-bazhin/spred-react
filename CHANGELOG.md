@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/art-bazhin/spred-react/compare/v0.1.7...v0.1.8) (2022-08-27)
+
+
+### Features
+
+* make a signal active before cb subscribing ([1702c66](https://github.com/art-bazhin/spred-react/commit/1702c663e0a225e71e6f08a2819d5d8f6286aec5))
+
 ### [0.1.7](https://github.com/art-bazhin/spred-react/compare/v0.1.6...v0.1.7) (2022-08-26)
 
 
