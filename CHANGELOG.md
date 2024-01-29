@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/art-bazhin/spred-react/compare/v0.1.9...v0.1.10) (2024-01-29)
+
+
+### Features
+
+* add getSnapshot helper function ([2b2f1d2](https://github.com/art-bazhin/spred-react/commit/2b2f1d2a6746f16426b8891f1230483f1e069a65))
+* add useComputed hook ([f200fee](https://github.com/art-bazhin/spred-react/commit/f200fee1ac3c42a35641b5f3193a5c82f78096ab))
+
+
+### CI
+
+* update ci script ([bf1f60c](https://github.com/art-bazhin/spred-react/commit/bf1f60c6ba6e6642111c9b515772f89f5457b375))
+
+
+### Build System
+
+* update dependencies and build scripts ([a0a32de](https://github.com/art-bazhin/spred-react/commit/a0a32de266891a8487e3b0a9d6733978223c39ef))
+
+
+### Code Refactoring
+
+* refactor useSignal using new spred and react versions ([285d7be](https://github.com/art-bazhin/spred-react/commit/285d7bea9216a57e71f63cc8b71822fccc6907d7))
+
+
+### Docs
+
+* add docs ([2ee0fbb](https://github.com/art-bazhin/spred-react/commit/2ee0fbb99e4ee9925b9ca7e49f45dce84b8a6ac5))
+
 ### [0.1.9](https://github.com/art-bazhin/spred-react/compare/v0.1.8...v0.1.9) (2024-01-29)
 
 
