@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/art-bazhin/spred-react/compare/v0.2.0...v0.3.0) (2024-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* useComputed renamed to useComputation
+
+### Features
+
+* add ability to use getSnapshot with objects containing non-signal properties ([984d929](https://github.com/art-bazhin/spred-react/commit/984d929832575ceddaa0ec4fe68dbfff70a4cbd1))
+* add useSignalFactory hook ([185cf59](https://github.com/art-bazhin/spred-react/commit/185cf59c7c9c149a7689321e1472362308636549))
+
 ## [0.2.0](https://github.com/art-bazhin/spred-react/compare/v0.1.10...v0.2.0) (2024-01-29)
 
 
