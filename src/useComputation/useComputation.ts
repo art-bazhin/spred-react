@@ -1,8 +1,7 @@
 import { computed } from '@spred/core';
-import { DependencyList, useMemo } from 'react';
-import { useSignal } from '../useSignal/useSignal';
-
-const EMPTY: DependencyList = [];
+import { DependencyList } from 'react';
+import { useSignalFactory } from '../useSignalFactory/useSignalFactory';
+import { EMPTY } from '../constants';
 
 /**
  * Create a computed signal, memoize it and subscribe the component to its updates.
@@ -10,10 +9,12 @@ const EMPTY: DependencyList = [];
  * @param dependendencies The list of variables referenced inside of the computation except other signals.
  * @returns The current value of the created signal.
  */
-export function useComputed<T>(
+export function useComputation<T>(
   computation: () => T,
   dependendencies?: DependencyList,
 ) {
-  const signal = useMemo(() => computed(computation), dependendencies || EMPTY);
-  return useSignal(signal);
+  return useSignalFactory(
+    () => computed(computation),
+    (dependendencies || EMPTY) as any,
+  );
 }

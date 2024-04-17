@@ -1,5 +1,6 @@
 import { useSignal } from './useSignal/useSignal';
-import { useComputed } from './useComputed/useComputed';
-import { getSnapshot, Reactive } from './getSnapshot/getSnapshot';
+import { useSignalFactory } from './useSignalFactory/useSignalFactory';
+import { useComputation } from './useComputation/useComputation';
+import { getSnapshot } from './getSnapshot/getSnapshot';
 
-export { Reactive, useSignal, useComputed, getSnapshot };
+export { useSignal, useSignalFactory, useComputation, getSnapshot };
