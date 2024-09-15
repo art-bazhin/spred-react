@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/art-bazhin/spred-react/compare/v0.3.1...v0.4.0) (2024-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* New API with hooks useSubscribe, useSignal, useReactiveState
+
+### Others
+
+* bump version ([3e6c88d](https://github.com/art-bazhin/spred-react/commit/3e6c88df6dd26dbfe153f0b0458fd5f4c3518fc8))
+
 ### [0.3.1](https://github.com/art-bazhin/spred-react/compare/v0.3.0...v0.3.1) (2024-09-15)
 
 
