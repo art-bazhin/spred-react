@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/art-bazhin/spred-react/compare/v0.4.0...v0.4.1) (2024-09-15)
+
+
+### Build System
+
+* fix package lock ([d456eff](https://github.com/art-bazhin/spred-react/commit/d456effc939384083dd44ecdc800a7a40399e352))
+
 ## [0.4.0](https://github.com/art-bazhin/spred-react/compare/v0.3.1...v0.4.0) (2024-09-15)
 
 
