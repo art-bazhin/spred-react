@@ -1,36 +1,51 @@
 import { useSignal } from './useSignal';
-import { signal } from '@spred/core';
-import { render, screen, act } from '@testing-library/react';
+import { Signal, WritableSignal } from '@spred/core';
+import { render, act } from '@testing-library/react';
+import { useState } from 'react';
 
 describe('useSignal', () => {
-  const counter = signal(0);
-  const doubleCounter = signal(() => counter.get() * 2);
+  it('creates writable signal and keeps it after rerender', () => {
+    let forceRender: any;
+    let lastCounter: any;
 
-  function CounterApp() {
-    const value = useSignal(counter);
-    const doubleValue = useSignal(doubleCounter);
+    function CounterApp() {
+      const counter = useSignal(0);
+      const [state, setState] = useState(0);
 
-    return (
-      <>
-        <span data-testid="counter1">{value}</span>
-        <span data-testid="counter2">{doubleValue}</span>
-      </>
-    );
-  }
+      forceRender = () => setState((v) => v + 1);
 
-  it('gets value of writable signal on every update', () => {
+      expect(counter).toBeInstanceOf(WritableSignal);
+      if (state) expect(lastCounter).toBe(counter);
+
+      lastCounter = counter;
+      return null;
+    }
+
     render(<CounterApp />);
-    expect(screen.getByTestId('counter1').textContent).toBe('0');
-
-    act(() => counter.set(1));
-    expect(screen.getByTestId('counter1').textContent).toBe('1');
+    act(forceRender);
+    act(forceRender);
   });
 
-  it('gets value of computed signal on every update', () => {
-    render(<CounterApp />);
-    expect(screen.getByTestId('counter2').textContent).toBe('2');
+  it('creates computed signal and keeps it after rerender', () => {
+    let forceRender: any;
+    let lastCounter: any;
 
-    act(() => counter.set(2));
-    expect(screen.getByTestId('counter2').textContent).toBe('4');
+    function CounterApp() {
+      const counter = useSignal(0);
+      const doubleCounter = useSignal((get) => get(counter) * 2);
+      const [state, setState] = useState(0);
+
+      forceRender = () => setState((v) => v + 1);
+
+      expect(doubleCounter).toBeInstanceOf(Signal);
+      if (state) expect(lastCounter).toBe(doubleCounter);
+
+      lastCounter = doubleCounter;
+      return null;
+    }
+
+    render(<CounterApp />);
+    act(forceRender);
+    act(forceRender);
   });
 });
