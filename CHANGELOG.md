@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/art-bazhin/spred-react/compare/v0.3.0...v0.3.1) (2024-09-15)
+
+
+### Features
+
+* rewrite to new API ([5cf4dde](https://github.com/art-bazhin/spred-react/commit/5cf4dde4724b05577db9bb7f67d4deba8256839b))
+
 ## [0.3.0](https://github.com/art-bazhin/spred-react/compare/v0.2.0...v0.3.0) (2024-04-17)
 
 
