@@ -22,6 +22,9 @@ export default [
       name: 'spred-react',
       file: `dist/spred-react.min.js`,
       format: 'umd',
+      globals: {
+        '@spred/core': 'spred',
+      },
     },
     plugins: [ts(), terserPlugin],
   },
